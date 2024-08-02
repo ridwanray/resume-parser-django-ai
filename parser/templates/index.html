@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Parser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        .header {
+            background-color: #ff6f4c;
+            padding: 20px 0;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6f4c;
+            background-color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .faqs{
+          
+            font-weight: bold;
+            border-radius: 5px;
+            color: #ff6f4c;
+            background-color: #fff;
+            padding: 5px 10px;
+    
+           
+        }
+        .nav a {
+            margin: 0 10px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .main-content {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .parser-section {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .parser-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .parser-section h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #ff6f4c;
+        }
+
+        .parser-section p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .parse-button {
+            background-color: #ff6f4c;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .parse-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading-text {
+            display: none;
+            color: green;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .upload-section {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-box {
+            border: 2px dashed #ddd;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .upload-label {
+            display: block;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            font-size: 16px;
+        }
+
+        .upload-box p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Hide default file input button */
+        #fileInput {
+            display: none;
+        }
+
+        .result-section {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: none;
+            max-width:auto;
+            margin: 20px auto;
+        }
+
+        .result-textarea {
+            width: 100%;
+            height: 500px; /* Increased height for better visibility */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">ResumeGenius</div>
+            <nav class="nav">
+                <a href="#">Builders</a>
+                <a href="#">Resumes</a>
+                <a href="#">Resources</a>
+            </nav>
+            <div class="faqs">
+                FAQs
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="parser-section">
+            <div class="parser-container">
+                <h1>Free Resume Parser: Test Your Resume For ATS Compatibility</h1>
+                <p>Worried that applicant tracking system (ATS) software won’t be able to accurately scan your resume?
+                    Our online resume parser instantly scans each section of your resume to confirm your resume is
+                    ATS-friendly.</p>
+            </div>
+        </section>
+
+        <section class="upload-section">
+            <p class="loading-text" id="loadingText">Loading...</p>
+            <div class="upload-box">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    
+                    <label for="fileInput" class="upload-label">
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text">Upload Your Resume</div>
+                    </label>
+                    <input type="file" name="file" id="fileInput" autocomplete="off" required />
+                    <p>DOC, DOCX, or PDF files up to 2MB</p>
+                    <div class="file-name" id="fileName"></div>
+                    <button class="parse-button" type="submit" id="submitButton">Parse Your Resume</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="result-section" id="resultSection">
+            <h2>Parsed Resume Result</h2>
+            <textarea id="result" class="result-textarea" readonly></textarea>
+            <div id="errorMessage" class="error-message"></div>
+        </section>
+    </main>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const submitButton = document.getElementById('submitButton');
+        const loadingText = document.getElementById('loadingText');
+        const resultTextarea = document.getElementById('result');
+        const resultSection = document.getElementById('resultSection');
+        const errorMessage = document.getElementById('errorMessage');
+
+        fileInput.addEventListener('change', () => {
+            fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            submitButton.disabled = true;
+            loadingText.style.display = 'block';
+            resultSection.style.display = 'none';
+
+            fetch("{% url 'upload_resume' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultSection.style.display = 'block';
+                if (data.error) {
+                    errorMessage.textContent = data.error;
+                    resultTextarea.style.display = 'none';
+                } else {
+                    resultTextarea.value = JSON.stringify(data, null, 2);
+                    errorMessage.textContent = '';
+                    resultTextarea.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                resultSection.style.display = 'block';
+                errorMessage.textContent = 'An error occurred: ' + error;
+                resultTextarea.style.display = 'none';
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                loadingText.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>
