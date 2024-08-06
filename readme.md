@@ -7,8 +7,9 @@ https://www.youtube.com/@ridwanray
 - pytest
 - Llama Machine Learning model
 
-
-
-
-
+# Landing page
 ![Description of Image](home-page.png)
+
+# Tests
+
+![Description of Image](test-result.png)
