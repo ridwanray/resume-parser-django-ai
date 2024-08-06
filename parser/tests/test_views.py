@@ -30,7 +30,6 @@ class TestUploadResume:
             response = client.post(
                 self.upload_resume_url, {"file": uploaded_file}, format="multipart"
             )
-            print(response.json())
 
         assert response.status_code == 200
         mock_invoke_model.assert_called_once()
